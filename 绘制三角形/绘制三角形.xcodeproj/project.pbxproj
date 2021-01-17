@@ -18,6 +18,8 @@
 		BDA2F5DC25A94BB7008A83CA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA2F5DA25A94BB7008A83CA /* LaunchScreen.storyboard */; };
 		BDA2F5DF25A94BB7008A83CA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BDA2F5DE25A94BB7008A83CA /* main.m */; };
 		BDA2F5E725A94D1B008A83CA /* RenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BDA2F5E625A94D1B008A83CA /* RenderView.m */; };
+		BDAAE38825B44DCE007A122D /* GLESUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = BDAAE38225B44DCD007A122D /* GLESUtils.m */; };
+		BDAAE38925B44DCE007A122D /* GLESMath.c in Sources */ = {isa = PBXBuildFile; fileRef = BDAAE38425B44DCE007A122D /* GLESMath.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +41,12 @@
 		BDA2F5DE25A94BB7008A83CA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BDA2F5E525A94D1B008A83CA /* RenderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RenderView.h; sourceTree = "<group>"; };
 		BDA2F5E625A94D1B008A83CA /* RenderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RenderView.m; sourceTree = "<group>"; };
+		BDAAE38225B44DCD007A122D /* GLESUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLESUtils.m; sourceTree = "<group>"; };
+		BDAAE38325B44DCD007A122D /* Quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quaternion.h; sourceTree = "<group>"; };
+		BDAAE38425B44DCE007A122D /* GLESMath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GLESMath.c; sourceTree = "<group>"; };
+		BDAAE38525B44DCE007A122D /* GLESUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESUtils.h; sourceTree = "<group>"; };
+		BDAAE38625B44DCE007A122D /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
+		BDAAE38725B44DCE007A122D /* GLESMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESMath.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +79,7 @@
 		BDA2F5CB25A94BB3008A83CA /* 绘制三角形 */ = {
 			isa = PBXGroup;
 			children = (
+				BDAAE38125B44DCD007A122D /* Utils */,
 				BD45368025A98924008DF0EA /* ShaderManager.h */,
 				BD45367F25A98924008DF0EA /* ShaderManager.m */,
 				BDA2F5CC25A94BB3008A83CA /* AppDelegate.h */,
@@ -90,6 +99,19 @@
 				BD45368425A98C0B008DF0EA /* normal.fsh */,
 			);
 			path = "绘制三角形";
+			sourceTree = "<group>";
+		};
+		BDAAE38125B44DCD007A122D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				BDAAE38225B44DCD007A122D /* GLESUtils.m */,
+				BDAAE38325B44DCD007A122D /* Quaternion.h */,
+				BDAAE38425B44DCE007A122D /* GLESMath.c */,
+				BDAAE38525B44DCE007A122D /* GLESUtils.h */,
+				BDAAE38625B44DCE007A122D /* Vector.h */,
+				BDAAE38725B44DCE007A122D /* GLESMath.h */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -164,7 +186,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDAAE38925B44DCE007A122D /* GLESMath.c in Sources */,
 				BDA2F5D425A94BB3008A83CA /* ViewController.m in Sources */,
+				BDAAE38825B44DCE007A122D /* GLESUtils.m in Sources */,
 				BDA2F5E725A94D1B008A83CA /* RenderView.m in Sources */,
 				BDA2F5CE25A94BB3008A83CA /* AppDelegate.m in Sources */,
 				BDA2F5DF25A94BB7008A83CA /* main.m in Sources */,

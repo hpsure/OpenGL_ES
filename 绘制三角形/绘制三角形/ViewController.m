@@ -8,9 +8,13 @@
 
 #import "ViewController.h"
 #import "RenderView.h"
+#import "GLESMath.h"
+#import "GLESUtils.h"
 @interface ViewController ()<GLKViewDelegate>
 @property (nonatomic, strong)RenderView *renderView;
 @property (nonatomic, assign)GLuint mPramgram;
+@property (nonatomic, assign)CGFloat ScaleStride;
+@property (nonatomic, strong)CADisplayLink *displayLink;
 @end
 
 @implementation ViewController
@@ -20,17 +24,19 @@
     // Do any additional setup after loading the view.
     self.renderView.delegate = self;
     [self.view addSubview:self.renderView];
+    [self.displayLink setPaused:NO];
+    self.ScaleStride = 0.05;
 }
 
 - (void)drawTriangle {
        static GLfloat triangleData[] = {
-           0.5f, -0.5f, -1.0f,     1.0f, 0.0f, 0.0f,
-           -0.5f, 0.5f, -1.0f,     0.0f, 1.0f, 1.0f,
-           -0.5f, -0.5f, -1.0f,    0.0f, 0.0f, 0.7f,
-           
-           0.5f, 0.5f, -1.0f,      1.0f, 1.0f, 0.5f,
-           -0.5f, 0.5f, -1.0f,     0.0f, 1.0f, 0.9f,
-           0.5f, -0.5f, -1.0f,     1.0f, 0.0f, 0.3f,
+           0.5f, -0.5f, -0.0f,     1.0f, 0.0f, 0.0f,
+           -0.5f, 0.5f, -0.0f,     0.0f, 1.0f, 1.0f,
+           -0.5f, -0.5f, -0.0f,    0.0f, 0.0f, 0.7f,
+
+           0.5f, 0.5f, -0.0f,      1.0f, 1.0f, 0.5f,
+           -0.5f, 0.5f, -0.0f,     0.0f, 1.0f, 0.9f,
+           0.5f, -0.5f, -0.0f,     1.0f, 0.0f, 0.3f,
 
        };
     GLuint attrBuffer;
@@ -51,11 +57,38 @@
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+#pragma mark -Action
+- (void)displayLinkAction:(CADisplayLink*)displayLink {
+    [self.renderView display];
+}
+
 #pragma mark -GLKViewDelegate
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
+    self.ScaleStride += 2;
     glClearColor(0.2f, 0.5f, 0.7f, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(self.mPramgram);
+    GLuint projectionMatrix = glGetUniformLocation(self.mPramgram, "projectionMatrix");
+    GLuint modelViewMatrix = glGetUniformLocation(self.mPramgram, "modelViewMatrix");
+        float width = self.view.frame.size.width;
+        float height = self.view.frame.size.height;
+        KSMatrix4 _projectionMatrix;
+        ksMatrixLoadIdentity(&_projectionMatrix);
+        float aspect = width / height;
+        ksPerspective(&_projectionMatrix, 30.0, aspect, 5.0f, 30.0f);
+        glUniformMatrix4fv(projectionMatrix, 1, GL_FALSE, (GLfloat*)&_projectionMatrix.m[0][0]);
+        KSMatrix4 _modelViewMatrix;
+        ksMatrixLoadIdentity(&_modelViewMatrix);
+        
+        ksTranslate(&_modelViewMatrix, 0.0, 0.0, -10.0);
+        KSMatrix4 _rotationMatrix;
+        ksMatrixLoadIdentity(&_rotationMatrix);
+        ksRotate(&_rotationMatrix, _ScaleStride, 0.0, 1, 0.0);
+        ksMatrixMultiply(&_modelViewMatrix, &_rotationMatrix, &_modelViewMatrix);
+        glUniformMatrix4fv(modelViewMatrix, 1, GL_FALSE, (GLfloat*)&_modelViewMatrix.m[0][0]);
+
+
+
     [self drawTriangle];
 }
 
@@ -66,5 +99,15 @@
         _mPramgram = _renderView.program;
     }
     return _renderView;
+}
+
+- (CADisplayLink *)displayLink
+{
+    if (!_displayLink) {
+        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkAction:)];
+        [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        _displayLink.paused = NO;
+    }
+    return _displayLink;
 }
 @end
